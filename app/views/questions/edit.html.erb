@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="large-12">
+      <h1>Edit the question</h1>
+
+      <p>Edit this tasty question, and you will win my heart</p>
+
+      <%= form_for @question, :url => { :action => "update" }  do |f| %>
+
+        <%= f.label :title %>
+        <%= f.text_area :title %>
+
+        <%= f.label :description %>
+        <%= f.text_area :description %>
+
+        <%= f.submit "Edit Question" %>
+      <%- end -%>
+
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="large-12">
+    <h1>Questions!!!!!</h1>
+      <p><%= @question.title %></p>
+      <a href="/questions/<%= @question.id %>/edit">Edit</a>
+      <a data-method="delete" href="/questions/<%= @question.id %>">Delete</a>
+
+      <p><%= @question.description %></p>
+        <ul>
+        <% @responses.each do |response| %>
+
+          <li><%= response.description %></li>
+          <a href="/questions/<%= @question.id %>/responses/<%= response.id %>/edit">Edit</a>
+          <br>
+        <% end %>
+      </ul>
+      <h1>New Response</h1>
+
+      <%= form_for [@question, @response] do |f| %>
+        <%= f.label :description %>
+        <%= f.text_field :description %>
+
+        <%= f.submit %>
+      <% end %>
+  </div>
+</div>
