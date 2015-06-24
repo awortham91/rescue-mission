@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'visitor is able to delete a question', %Q{
+feature 'visitor is able to select the best answer', %Q{
   As a user
   I want to mark an answer as the best answer
   So that others can quickly find the answer
@@ -12,13 +12,27 @@ feature 'visitor is able to delete a question', %Q{
 # - I must see the "best" answer above all other answers in the answer list
 
   scenario 'user chooses best answer' do
+    accepted_answer = "This answer is the best ajsdhfaklsdjhflaksjdhfaksjdhfaksjdhfaksjdhfaksjdhflaksjdfhlaksdjfhaksdjfhkdjfhalksdjfhalksdjfh"
+    other_answer = "ajsdhfaklsdjhflaksjdhfaksjdhfaksjdhfaksjdhfaksjdhflaksjdfhlaksdjfhaksdjfhkdjfhalksdjfhalksdjfh"
 
-    question_title = "How many chickens crossed the road to get to the other side on a sunday?"
     visit '/questions/1'
-    expect(page).to have_content(question_title)
+    fill_in 'Description', with: accepted_answer
+    click_button 'Create Response'
 
-    click_link 'Delete'
 
-    expect(page).not_to have_content(question_title)
+    fill_in 'Description', with: other_answer
+    click_button 'Create Response'
+
+
+    page.body.index(other_answer).should < page.body.index(accepted_answer)
+
+    within all(".response")[1] do
+      click_on("Accept Answer")
+    end
+
+    expect(page).to have_content('Answer Accepted')
+    expect(page).to have_content('Unaccept Answer')
+    page.body.index(accepted_answer).should < page.body.index(other_answer)
+
   end
 end

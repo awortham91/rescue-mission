@@ -2,12 +2,14 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+
   end
 
   def show
     @question = Question.find(params[:id])
     @response = Response.new
-    @responses = Response.where(["question_id = #{params[:id]}"])
+    @responses = Response.where(question_id: params[:id], accepted_answer: nil).order(updated_at: :desc)
+    @accepted_response = Response.where(question_id: params[:id], accepted_answer: true).first
   end
 
   def new

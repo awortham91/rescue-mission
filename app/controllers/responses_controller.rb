@@ -3,6 +3,7 @@ class ResponsesController < ApplicationController
   def index
     @question = Question.find(params[:question_id])
     @responses = @question.responses
+    byebug
   end
 
   def new
@@ -42,7 +43,20 @@ class ResponsesController < ApplicationController
       flash[:notice] = 'You did not do that correctly'
       redirect_to "/questions/#{params[:question_id]}/responses/#{params[:id]}/edit"
     end
+  end
 
+  def accepted
+    @response = Response.find(params[:id])
+    @response.update_attribute(:accepted_answer, true)
+    flash[:notice] = 'Answer Accepted'
+    redirect_to "/questions/#{params[:question_id]}"
+  end
+
+  def unaccepted
+    @response = Response.find(params[:id])
+    @response.update_attribute(:accepted_answer, nil)
+    flash[:notice] = 'Answer Unaccepted'
+    redirect_to "/questions/#{params[:question_id]}"
   end
 
   protected
